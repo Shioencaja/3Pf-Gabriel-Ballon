@@ -1,10 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Cursos, CursosService } from '../../services/cursos.service';
 
 @Component({
   selector: 'app-courses-page',
   templateUrl: './courses-page.component.html',
-  styleUrls: ['./courses-page.component.scss']
+  styleUrls: ['./courses-page.component.scss'],
 })
-export class CoursesPageComponent {
+export class CoursesPageComponent implements OnInit {
+  displayedColumns = ['id', 'nombre', 'fechaFinal'];
+  constructor(public cursosService: CursosService) {}
 
+  ngOnInit(): void {
+    this.cursosService.loadCursos();
+  }
 }

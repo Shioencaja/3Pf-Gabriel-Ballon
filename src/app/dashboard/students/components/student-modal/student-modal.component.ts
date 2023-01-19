@@ -7,19 +7,19 @@ import { Student } from 'src/app/core/models';
 @Component({
   selector: 'app-student-modal',
   templateUrl: './student-modal.component.html',
-  styleUrls: ['./student-modal.component.css']
+  styleUrls: ['./student-modal.component.css'],
 })
 export class StudentModalComponent {
-  firstNameControl = new FormControl('', [Validators.required])
-  lastNameControl = new FormControl('', [Validators.required, Validators.email])
+  firstNameControl = new FormControl('', [Validators.required]);
+  lastNameControl = new FormControl('', [Validators.required]);
   studentForm = new FormGroup({
-    firstName: this.firstNameControl,
-    lastName: this.lastNameControl,
+    nombre: this.firstNameControl,
+    apellidos: this.lastNameControl,
   });
 
   constructor(
     private readonly dialogRef: DialogRef,
-    @Inject(MAT_DIALOG_DATA) public data: Student | undefined,
+    @Inject(MAT_DIALOG_DATA) public data: Student | undefined
   ) {
     if (data) {
       this.studentForm.patchValue(data);
@@ -27,6 +27,6 @@ export class StudentModalComponent {
   }
 
   close() {
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 }

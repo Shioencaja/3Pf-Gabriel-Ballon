@@ -1,8 +1,8 @@
 export class Student {
   constructor(
     public id: number,
-    public firstName: string,
-    public lastName: string,
-    public active: boolean,
+    public nombre: string,
+    public apellidos: string,
+    public asistencias: number
   ) {}
 }
