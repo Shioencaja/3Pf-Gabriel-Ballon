@@ -3,11 +3,10 @@ import { BehaviorSubject, Subject, take } from 'rxjs';
 import { User } from 'src/app/models/user.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionService {
-
-  private user = new BehaviorSubject<User | null>(null)
+  private user = new BehaviorSubject<User | null>(null);
   public user$ = this.user.asObservable();
 
   constructor() {}
@@ -25,10 +24,10 @@ export class SessionService {
             data.email || user.email,
             data.first_name || user.first_name,
             data.last_name || user.last_name,
-            data.avatar || user.avatar,
+            data.avatar || user.avatar
           )
-        )
+        );
       }
-    })
+    });
   }
 }
