@@ -10,7 +10,11 @@ describe('AlumnosService', () => {
     service = TestBed.inject(AlumnosService);
   });
 
-  it('should be created', () => {
+  it('Tiene que ser creado', () => {
     expect(service).toBeTruthy();
+  });
+  it('Tiene que tener un método llamado getAlumnos', () => {
+    const nombre = service.getAlumnos();
+    expect(nombre).toMatch('Alumnos');
   });
 });
