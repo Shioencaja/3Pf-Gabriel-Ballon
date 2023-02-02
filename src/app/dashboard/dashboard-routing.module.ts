@@ -11,34 +11,30 @@ const routes: Routes = [
     children: [
       {
         path: 'students',
-        loadChildren: () => import('./students/students.module').then((module) => module.StudentsModule)
+        loadChildren: () =>
+          import('./students/students.module').then(
+            (module) => module.StudentsModule
+          ),
       },
       {
         path: 'courses',
-        loadChildren: () => import('./courses/courses.module').then((module) => module.CoursesModule)
+        loadChildren: () =>
+          import('./courses/courses.module').then(
+            (module) => module.CoursesModule
+          ),
       },
-      {
-        path: 'commissions',
-        loadChildren: () => import('./commissions/commissions.module').then((module) => module.CommissionsModule)
-      },
-      {
-        path: 'products',
-        loadChildren: () => import('./products/products.module').then((module) => module.ProductsModule)
-      },
+
       {
         path: 'my-profile',
         component: MyProfileComponent,
-      }
-    ]
+      },
+    ],
   },
 ];
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [RouterModule]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class DashboardRoutingModule { }
+export class DashboardRoutingModule {}

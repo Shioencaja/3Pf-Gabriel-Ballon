@@ -1,49 +1,43 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Student } from 'src/app/core/models';
 import { StudentModalComponent } from '../../components/student-modal/student-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { StudentsService } from '../../services/students.service';
+import { Store } from '@ngrx/store';
+import {
+  createStudent,
+  deleteStudent,
+  editStudent,
+  loadStudents,
+  resetStudentState,
+} from '../../store/students.actions';
+import { Student } from '../../models/student.model';
+import { selectStudentState } from '../../store/students.selectors';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { AlumnosService } from '../../services/alumnos.service';
+
 @Component({
   selector: 'app-students-page',
   templateUrl: './students-page.component.html',
   styleUrls: ['./students-page.component.scss'],
 })
-export class StudentsPageComponent implements OnDestroy {
-  displayedColumns = [
-    'id',
-    'nombre',
-    'apellidos',
-    'asistencias',
-    'delete',
-    'edit',
-  ];
-  students: Observable<Student[]>;
-  alumnos: Observable<Student[]>;
-  private destroyed$ = new Subject();
+export class StudentsPageComponent implements OnInit, OnDestroy {
+  displayedColumns = ['id', 'nombre', 'apellidos', 'asistencias'];
+  students: Student[] = [];
+  loading = true;
 
   constructor(
-    private readonly studentsService: StudentsService,
-    private readonly dialogService: MatDialog,
-    private readonly alumnosService: AlumnosService
+    private readonly store: Store,
+    private readonly dialogService: MatDialog
   ) {
-    this.students = this.studentsService.students$;
-    this.alumnos = this.alumnosService.getAlumnos();
+    this.store.dispatch(loadStudents());
   }
 
   ngOnDestroy(): void {
-    this.destroyed$.next(true);
+    this.store.dispatch(resetStudentState());
   }
 
-  editStudent(element: Student) {
-    const dialog = this.dialogService.open(StudentModalComponent, {
-      data: element,
-    });
-    dialog.afterClosed().subscribe((data) => {
-      if (data) {
-        this.alumnosService.editStudent(element.id, data);
-      }
+  ngOnInit(): void {
+    this.store.select(selectStudentState).subscribe((state) => {
+      this.students = state.data;
+      this.loading = state.loading;
     });
   }
 
@@ -51,20 +45,12 @@ export class StudentsPageComponent implements OnDestroy {
     const dialog = this.dialogService.open(StudentModalComponent);
     dialog.afterClosed().subscribe((data) => {
       if (data) {
-        this.alumnosService.createStudent({
-          nombre: data.nombre,
-          apellidos: data.apellidos,
-          asistencias: 5,
-        });
+        // console.log(data);
+        this.store.dispatch(createStudent({ data }));
       }
     });
   }
-
-  deleteStudent(element: Student) {
-    this.alumnosService.removeStudent(element.id);
-  }
-
-  print() {
-    console.log(this.alumnos);
+  resetStudent() {
+    this.store.dispatch(resetStudentState());
   }
 }
